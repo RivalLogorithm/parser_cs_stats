@@ -1,0 +1,31 @@
+version: "3"
+
+volumes:
+  mysql_volume:
+
+services:
+  firefox:
+    image: selenium/standalone-firefox
+    ports:
+      - "4444:4444"
+      - "7900:7900"
+    shm_size: '2gb'
+
+  db:
+    image: mysql
+    volumes:
+      - mysql_volume:/var/lib/mysql
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      - TZ=Europe/Moscow
+      - MYSQL_ROOT_PASSWORD=password
+
+
+  selen_csgo:
+    build: csgofail_parser/
+    restart: always
+#    command:
+#      - ./wait-for-grid.sh python selen_csgo.py
+#      - python selen_csgo.py
